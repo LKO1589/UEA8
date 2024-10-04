@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            background-color: #0a0a2e;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .game-container {
+            max-width: 932px;
+            margin: 20px auto;
+            padding: 15px;
+        }
+        .game-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            background-color: #1a1a3e;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+        .game-image {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-right: 15px;
+        }
+        .game-info {
+            flex: 1;
+            margin-right: 15px;
+        }
+        .game-title {
+            font-size: 23px;
+            margin-bottom: 10px;
+            color: white;
+        }
+        .success-rate {
+            font-size: 21px;
+            margin-bottom: 10px;
+        }
+        .player-count {
+            font-size: 19px;
+            color: #888;
+        }
+        .progress-wrapper {
+            width: 400px;
+        }
+        .progress-container {
+            width: 100%;
+            height: 20px;
+            background-color: #1f4068;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            transition: width 0.3s ease, background 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: linear-gradient(
+                45deg,
+                rgba(255, 255, 255, 0.2) 25%,
+                transparent 25%,
+                transparent 50%,
+                rgba(255, 255, 255, 0.2) 50%,
+                rgba(255, 255, 255, 0.2) 75%,
+                transparent 75%,
+                transparent
+            );
+            background-size: 30px 30px;
+            animation: move-stripes 1s linear infinite;
+            z-index: 1;
+        }
+        @keyframes move-stripes {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 30px 0;
+            }
+        }
+        .progress-text {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            color: white;
+            z-index: 2;
+        }
+        .jackpot-text {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 19px;
+            font-weight: bold;
+            color: #ffa500;
+            display: none;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            z-index: 2;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .bounce {
+            animation: bounce 0.5s ease infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-item" data-game-id="1">
+            <img src="https://www.pgsoft.com/uploads/Games/Images/9e85c34c-e2b9-4964-9ca6-cbc8da943885.webp" alt="Three Crazy Piggies" class="game-image">
+            <div class="game-info">
+                <div class="game-title">Three Crazy Piggies</div>
+                <div class="success-rate">Success Rate - Medium</div>
+                <div class="player-count">Playing: 0 Users</div>
+            </div>
+            <div class="progress-wrapper">
+                <div class="progress-container">
+                    <div class="progress-bar"></div>
+                    <div class="progress-text">0%</div>
+                    <div class="jackpot-text">JACKPOT!</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-item" data-game-id="2">
+            <img src="https://www.pgsoft.com/uploads/Games/Images/3b2f77b8-40ba-46f6-ba9a-7a24f095223b.webp" alt="Wings of Iguazu" class="game-image">
+            <div class="game-info">
+                <div class="game-title">Wings of Iguazu</div>
+                <div class="success-rate">Success Rate - High</div>
+                <div class="player-count">Playing: 0 Users</div>
+            </div>
+            <div class="progress-wrapper">
+                <div class="progress-container">
+                    <div class="progress-bar"></div>
+                    <div class="progress-text">0%</div>
+                    <div class="jackpot-text">JACKPOT!</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-item" data-game-id="3">
+            <img src="https://www.pgsoft.com/uploads/Games/Images/c961c180-e315-4985-b66d-be3dcb4ac2bd.webp" alt="Yakuza Honor" class="game-image">
+            <div class="game-info">
+                <div class="game-title">Yakuza Honor</div>
+                <div class="success-rate">Success Rate - Low</div>
+                <div class="player-count">Playing: 0 Users</div>
+            </div>
+            <div class="progress-wrapper">
+                <div class="progress-container">
+                    <div class="progress-bar"></div>
+                    <div class="progress-text">0%</div>
+                    <div class="jackpot-text">JACKPOT!</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-item" data-game-id="2">
+            <img src="https://www.pgsoft.com/uploads/Games/Images/cc01fe53-8f40-4299-9809-5a9e6f3ebb9a.png" alt="Mahjong Ways" class="game-image">
+            <div class="game-info">
+                <div class="game-title">Mahjong Ways</div>
+                <div class="success-rate">Success Rate - High</div>
+                <div class="player-count">Playing: 0 Users</div>
+            </div>
+            <div class="progress-wrapper">
+                <div class="progress-container">
+                    <div class="progress-bar"></div>
+                    <div class="progress-text">0%</div>
+                    <div class="jackpot-text">JACKPOT!</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-item" data-game-id="2">
+            <img src="https://www.pgsoft.com/uploads/Games/Images/dad28553-b44b-41d9-9e8f-1188f7ffd995.png" alt="Fortune Ox" class="game-image">
+            <div class="game-info">
+                <div class="game-title">Fortune Ox</div>
+                <div class="success-rate">Success Rate - High</div>
+                <div class="player-count">Playing: 0 Users</div>
+            </div>
+            <div class="progress-wrapper">
+                <div class="progress-container">
+                    <div class="progress-bar"></div>
+                    <div class="progress-text">0%</div>
+                    <div class="jackpot-text">JACKPOT!</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-item" data-game-id="2">
+            <img src="https://www.pgsoft.com/uploads/Games/Images/eb322534-bfe4-42db-a1ac-8c7b16db1c80.png" alt="Gladiator's Glory" class="game-image">
+            <div class="game-info">
+                <div class="game-title">Gladiator's Glory</div>
+                <div class="success-rate">Success Rate - High</div>
+                <div class="player-count">Playing: 0 Users</div>
+            </div>
+            <div class="progress-wrapper">
+                <div class="progress-container">
+                    <div class="progress-bar"></div>
+                    <div class="progress-text">0%</div>
+                    <div class="jackpot-text">JACKPOT!</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-item" data-game-id="2">
+            <img src="https://www.pgsoft.com/uploads/Games/Images/5065b967-4b74-40f9-918a-470557b9b942.png" alt="Pinata Wins" class="game-image">
+            <div class="game-info">
+                <div class="game-title">Pinata Wins</div>
+                <div class="success-rate">Success Rate - High</div>
+                <div class="player-count">Playing: 0 Users</div>
+            </div>
+            <div class="progress-wrapper">
+                <div class="progress-container">
+                    <div class="progress-bar"></div>
+                    <div class="progress-text">0%</div>
+                    <div class="jackpot-text">JACKPOT!</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-item" data-game-id="2">
+            <img src="https://www.pgsoft.com/uploads/Games/Images/2e54b0dc-718b-47f2-9895-24b3808ed73b.png" alt="Werewolf's Hunt" class="game-image">
+            <div class="game-info">
+                <div class="game-title">Werewolf's Hunt</div>
+                <div class="success-rate">Success Rate - High</div>
+                <div class="player-count">Playing: 0 Users</div>
+            </div>
+            <div class="progress-wrapper">
+                <div class="progress-container">
+                    <div class="progress-bar"></div>
+                    <div class="progress-text">0%</div>
+                    <div class="jackpot-text">JACKPOT!</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-item" data-game-id="2">
+            <img src="https://www.pgsoft.com/uploads/Games/Images/3b2f77b8-40ba-46f6-ba9a-7a24f095223b.webp" alt="Wild Ape #3258" class="game-image">
+            <div class="game-info">
+                <div class="game-title">Wild Ape #3258</div>
+                <div class="success-rate">Success Rate - High</div>
+                <div class="player-count">Playing: 0 Users</div>
+            </div>
+            <div class="progress-wrapper">
+                <div class="progress-container">
+                    <div class="progress-bar"></div>
+                    <div class="progress-text">0%</div>
+                    <div class="jackpot-text">JACKPOT!</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-item" data-game-id="2">
+            <img src="https://www.pgsoft.com/uploads/Games/Images/45caaf2d-d977-4cb9-ba41-da5ed5b9ddd2.png" alt="Mystic Potion" class="game-image">
+            <div class="game-info">
+                <div class="game-title">Mystic Potion</div>
+                <div class="success-rate">Success Rate - High</div>
+                <div class="player-count">Playing: 0 Users</div>
+            </div>
+            <div class="progress-wrapper">
+                <div class="progress-container">
+                    <div class="progress-bar"></div>
+                    <div class="progress-text">0%</div>
+                    <div class="jackpot-text">JACKPOT!</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-item" data-game-id="2">
+            <img src="https://www.pgsoft.com/uploads/Games/Images/65c195f6-a3d3-4523-9017-b754fa019d0e.png" alt="Anubis Wrath" class="game-image">
+            <div class="game-info">
+                <div class="game-title">Anubis Wrath</div>
+                <div class="success-rate">Success Rate - High</div>
+                <div class="player-count">Playing: 0 Users</div>
+            </div>
+            <div class="progress-wrapper">
+                <div class="progress-container">
+                    <div class="progress-bar"></div>
+                    <div class="progress-text">0%</div>
+                    <div class="jackpot-text">JACKPOT!</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-item" data-game-id="2">
+            <img src="https://www.pgsoft.com/uploads/Games/Images/188a0ea2-3d8e-4fd5-9306-6a75680285df.png" alt="Zombie Outbreak" class="game-image">
+            <div class="game-info">
+                <div class="game-title">Zombie Outbreak</div>
+                <div class="success-rate">Success Rate - High</div>
+                <div class="player-count">Playing: 0 Users</div>
+            </div>
+            <div class="progress-wrapper">
+                <div class="progress-container">
+                    <div class="progress-bar"></div>
+                    <div class="progress-text">0%</div>
+                    <div class="jackpot-text">JACKPOT!</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-item" data-game-id="2">
+            <img src="https://www.pgsoft.com/uploads/Games/Images/f72762b7-4de3-4560-b4af-f7ef3407e82b.webp" alt="Shark Bounty" class="game-image">
+            <div class="game-info">
+                <div class="game-title">Shark Bounty</div>
+                <div class="success-rate">Success Rate - High</div>
+                <div class="player-count">Playing: 0 Users</div>
+            </div>
+            <div class="progress-wrapper">
+                <div class="progress-container">
+                    <div class="progress-bar"></div>
+                    <div class="progress-text">0%</div>
+                    <div class="jackpot-text">JACKPOT!</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-item" data-game-id="2">
+            <img src="https://www.pgsoft.com/uploads/Games/Images/62656bc0-b89c-49e4-992f-476438f55a70.webp" alt="Oishi Delights" class="game-image">
+            <div class="game-info">
+                <div class="game-title">Oishi Delights</div>
+                <div class="success-rate">Success Rate - High</div>
+                <div class="player-count">Playing: 0 Users</div>
+            </div>
+            <div class="progress-wrapper">
+                <div class="progress-container">
+                    <div class="progress-bar"></div>
+                    <div class="progress-text">0%</div>
+                    <div class="jackpot-text">JACKPOT!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const gameItems = document.querySelectorAll('.game-item');
+            
+            function getProgressBarColor(progress) {
+                if (progress <= 40) {
+                    const redToYellowProgress = progress / 40;
+                    return `linear-gradient(90deg, 
+                        rgb(255, ${Math.round(redToYellowProgress * 255)}, 0), 
+                        rgb(255, ${Math.round(redToYellowProgress * 255)}, 0))`;
+                } else if (progress <= 70) {
+                    return 'linear-gradient(90deg, #ffd700, #ffd700)';
+                } else {
+                    const yellowToGreenProgress = (progress - 70) / 30;
+                    return `linear-gradient(90deg, 
+                        rgb(${Math.round(255 * (1 - yellowToGreenProgress))}, 255, 0), 
+                        rgb(${Math.round(255 * (1 - yellowToGreenProgress))}, 255, 0))`;
+                }
+            }
+
+            function updateSuccessRate(item, progress) {
+                const successRate = item.querySelector('.success-rate');
+                if (progress >= 70) {
+                    successRate.style.color = '#4CAF50';
+                    successRate.textContent = 'Success Rate - High';
+                } else if (progress >= 40) {
+                    successRate.style.color = '#ffd700';
+                    successRate.textContent = 'Success Rate - Medium';
+                } else {
+                    successRate.style.color = '#f44336';
+                    successRate.textContent = 'Success Rate - Low';
+                }
+            }
+
+            function updatePlayerCount(item, playerCount) {
+                const playerCountElement = item.querySelector('.player-count');
+                playerCountElement.textContent = `Playing: ${playerCount} Users`;
+            }
+
+            function toggleBounceAnimation(item, progress) {
+                if (progress > 80) {
+                    item.classList.add('bounce');
+                } else {
+                    item.classList.remove('bounce');
+                }
+            }
+
+            function updateRanking() {
+                const gameContainer = document.querySelector('.game-container');
+                const gameItems = Array.from(gameContainer.querySelectorAll('.game-item'));
+                
+                gameItems.sort((a, b) => {
+                    const progressA = parseFloat(a.querySelector('.progress-text').textContent);
+                    const progressB = parseFloat(b.querySelector('.progress-text').textContent);
+                    return progressB - progressA;
+                });
+
+                gameItems.forEach(item => gameContainer.appendChild(item));
+            }
+
+            gameItems.forEach(item => {
+                const gameId = item.dataset.gameId;
+                const progressBar = item.querySelector('.progress-bar');
+                const progressText = item.querySelector('.progress-text');
+                const jackpotText = item.querySelector('.jackpot-text');
+                
+                let progress = localStorage.getItem(`progress_${gameId}`) || 0;
+                progress = parseFloat(progress);
+                let playerCount = localStorage.getItem(`playerCount_${gameId}`);
+                if (!playerCount) {
+                    playerCount = Math.floor(Math.random() * (100 - 20 + 1)) + 20;
+                    localStorage.setItem(`playerCount_${gameId}`, playerCount);
+                }
+                playerCount = parseInt(playerCount);
+
+                let isResetting = false;
+
+                function updateProgress() {
+                    if (isResetting) return;
+
+                    if (progress < 100) {
+                        const increment = Math.random() * 5 + 1;
+                        progress = Math.min(100, progress + increment);
+                        progressBar.style.width = progress + '%';
+                        progressBar.style.background = getProgressBarColor(progress);
+                        progressText.textContent = Math.round(progress) + '%';
+                        updateSuccessRate(item, progress);
+                        toggleBounceAnimation(item, progress);
+
+                        localStorage.setItem(`progress_${gameId}`, progress);
+
+                        updateRanking(); // เพิ่มการเรียกใช้ updateRanking ที่นี่
+
+                        const nextUpdate = Math.random() * 7000 + 550;
+                        setTimeout(updateProgress, nextUpdate);
+                    } else {
+                        isResetting = true;
+                        jackpotText.style.display = 'block';
+                        
+                        setTimeout(() => {
+                            progress = 0;
+                            progressBar.style.width = '0%';
+                            progressBar.style.background = getProgressBarColor(0);
+                            progressText.textContent = '0%';
+                            jackpotText.style.display = 'none';
+                            isResetting = false;
+                            localStorage.setItem(`progress_${gameId}`, progress);
+                            toggleBounceAnimation(item, progress);
+                            updateProgress();
+                        }, 5000);
+                    }
+                }
+
+                function updatePlayerCountPeriodically() {
+                    const change = Math.floor(Math.random() * 11) - 5; // -5 to 5
+                    playerCount = Math.max(20, Math.min(3000, playerCount + change));
+                    updatePlayerCount(item, playerCount);
+                    localStorage.setItem(`playerCount_${gameId}`, playerCount);
+                    setTimeout(updatePlayerCountPeriodically, 200);
+                }
+
+                // Initial update
+                progressBar.style.width = progress + '%';
+                progressBar.style.background = getProgressBarColor(progress);
+                progressText.textContent = Math.round(progress) + '%';
+                updateSuccessRate(item, progress);
+                updatePlayerCount(item, playerCount);
+                toggleBounceAnimation(item, progress);
+
+                // Start updates
+                updateProgress();
+                updatePlayerCountPeriodically();
+            });
+
+            // เรียกใช้ฟังก์ชัน updateRanking ทุก 5 วินาที
+            setInterval(updateRanking, 5000);
+        });
+    </script>
+</body>
+</html>
